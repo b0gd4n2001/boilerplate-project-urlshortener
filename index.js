@@ -44,8 +44,7 @@ app.listen(port, function () {
 
 app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async function (req, res) {
   if (/(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})(\.[a-zA-Z0-9]{2,})?/.test(req.body.url)) {
-    console.log(new URL(req.body.url))
-    dns.lookup(new URL(req.body.url).host, async function (err, address, family) {
+    dns.lookup(req.body.url, async function (err, address, family) {
       console.log(err, address, family)
       if (err) {
         res.json({ error: 'invalid url' })
