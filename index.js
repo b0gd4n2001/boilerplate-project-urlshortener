@@ -44,7 +44,9 @@ app.listen(port, function () {
 
 app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async function (req, res) {
   if (req.body.url) {
-    dns.lookup(req.body.url, async function (err, address, family) {
+    console.log(new URL(req.body.url))
+    dns.lookup(new URL(req.body.url).host, async function (err, address, family) {
+      console.log(err, address, family)
       if (err) {
         res.json({ error: 'invalid url' })
       } else {
