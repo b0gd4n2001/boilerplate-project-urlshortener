@@ -73,5 +73,5 @@ app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async func
 })
 
 app.get('/api/shorturl/:url_number', async function (req, res) {
-  const shortUrl = await ShortURLModel.findOne({ short_url: req.params.url_number });
+  //const shortUrl = await ShortURLModel.findOne({ short_url: req.params.url_number });
 })
