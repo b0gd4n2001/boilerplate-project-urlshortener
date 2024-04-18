@@ -42,6 +42,7 @@ app.listen(port, function () {
 });
 
 app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async function (req, res) {
+  console.log(req.body.url);
   try {
     const host = new URL(req.body.url).host;
     dns.lookup(host, async function (err, address, family) {
