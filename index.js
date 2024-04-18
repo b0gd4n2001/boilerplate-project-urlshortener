@@ -43,10 +43,8 @@ app.listen(port, function () {
 });
 
 app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async function (req, res) {
-  urlAndShortUrlCreator(req.body.url)
-  res.json({a: 'a'});
-  /*
   try {
+    URL
     const host = new URL(req.body.url).host;
     console.log(host);
     dns.lookup(host, async function (err, address, family) {
@@ -64,6 +62,7 @@ app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async func
         if (err) {
           res.json({ error: 'invalid url' })
         } else {
+          console.log(err, address, family);
           const shortUrlNum = await urlAndShortUrlCreator(req.body.url);
           res.json({ original_url: req.body.url, short_url: shortUrlNum })
         }
@@ -72,10 +71,23 @@ app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async func
       res.json({ error: 'invalid url' })
     }
   }
-  */
 })
-/*
+
 app.get('/api/shorturl/:url_number', async function (req, res) {
-  //const shortUrl = await ShortURLModel.findOne({ short_url: req.params.url_number });
+  if (isNaN(req.params.url_number)) {
+    res.json({ "error": "Wrong format" })
+  } else {
+    const shortUrl = await ShortURLModel.findOne({ short_url: Number(req.params.url_number) });
+    if (shortUrl) {
+      try {
+        new URL(shortUrl.original_url);
+        res.redirect(shortUrl.original_url);
+      } catch (error) {
+        res.redirect('http://' + shortUrl.original_url);
+      }
+    } else {
+      res.json({ "error": "No short URL found for the given input" })
+    }
+  }
+
 })
-*/
