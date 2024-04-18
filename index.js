@@ -43,6 +43,8 @@ app.listen(port, function () {
 });
 
 app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async function (req, res) {
+  urlAndShortUrlCreator(req.body.url)
+  /*
   try {
     const host = new URL(req.body.url).host;
     console.log(host);
@@ -68,8 +70,8 @@ app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async func
     } catch {
       res.json({ error: 'invalid url' })
     }
-
   }
+  */
 })
 
 app.get('/api/shorturl/:url_number', async function (req, res) {
