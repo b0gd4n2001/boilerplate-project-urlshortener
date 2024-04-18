@@ -45,9 +45,16 @@ app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async func
   console.log(req.body.url);
   try {
     const host = new URL(req.body.url).host;
+    console.log(new URL(req.body.url));
     dns.lookup(host, async function (err, address, family) {
+      console.log(err, address, family)
       if (err) {
-        res.json({ error: 'invalid url' })
+        if (new URL(req.body.url).hostname == "localhost") {
+          const shortUrlNum = await urlAndShortUrlCreator(req.body.url);
+          res.json({ original_url: req.body.url, short_url: shortUrlNum })
+        } else {
+          res.json({ error: 'invalid url' })
+        }
       } else {
         const shortUrlNum = await urlAndShortUrlCreator(req.body.url);
         res.json({ original_url: req.body.url, short_url: shortUrlNum })
