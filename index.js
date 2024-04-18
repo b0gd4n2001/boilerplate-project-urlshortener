@@ -43,7 +43,8 @@ app.listen(port, function () {
 });
 
 app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async function (req, res) {
-  if (/(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})(\.[a-zA-Z0-9]{2,})?/.test(req.body.url)) {
+  try {
+    const url = req.body.url
     dns.lookup(req.body.url, async function (err, address, family) {
       console.log(err, address, family)
       if (err) {
@@ -53,16 +54,13 @@ app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async func
         res.json({ original_url: req.body.url, short_url: shortUrlNum })
       }
     });
-  } else {
+  } catch (error) {
+    console.log(error)
     res.json({ error: 'invalid url' })
   }
 })
 
 app.get('/api/shorturl/:url_number', async function (req, res) {
-  const shortUrl = await ShortURLModel.findOne({short_url: req.params.url_number});
-  if (shortUrl) {
-    res.redirect(301, shortUrl.original_url)
-  } else {
-    res.json({error: "Wrong format"})
-  }
+  const shortUrl = await ShortURLModel.findOne({ short_url: req.params.url_number });
+  console.log(shortUrl);
 })
