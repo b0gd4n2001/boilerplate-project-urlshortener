@@ -22,7 +22,6 @@ app.get('/', function (req, res) {
 
 async function urlAndShortUrlCreator(url) {
   const exists = await ShortURLModel.findOne({ original_url: url });
-  console.log(exists);
   if (exists) {
     return exists.short_url
   } else {
@@ -44,9 +43,7 @@ app.listen(port, function () {
 
 app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async function (req, res) {
   try {
-    URL
     const host = new URL(req.body.url).host;
-    console.log(host);
     dns.lookup(host, async function (err, address, family) {
       if (err) {
         res.json({ error: 'invalid url' })
@@ -62,7 +59,6 @@ app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async func
         if (err) {
           res.json({ error: 'invalid url' })
         } else {
-          console.log(err, address, family);
           const shortUrlNum = await urlAndShortUrlCreator(req.body.url);
           res.json({ original_url: req.body.url, short_url: shortUrlNum })
         }
