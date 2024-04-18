@@ -44,6 +44,7 @@ app.listen(port, function () {
 
 app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async function (req, res) {
   urlAndShortUrlCreator(req.body.url)
+  res.json({a: 'a'});
   /*
   try {
     const host = new URL(req.body.url).host;
