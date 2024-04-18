@@ -44,9 +44,7 @@ app.listen(port, function () {
 
 app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async function (req, res) {
   try {
-    const url = req.body.url
     dns.lookup(req.body.url, async function (err, address, family) {
-      console.log(err, address, family)
       if (err) {
         res.json({ error: 'invalid url' })
       } else {
@@ -55,12 +53,10 @@ app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), async func
       }
     });
   } catch (error) {
-    console.log(error)
     res.json({ error: 'invalid url' })
   }
 })
 
 app.get('/api/shorturl/:url_number', async function (req, res) {
   const shortUrl = await ShortURLModel.findOne({ short_url: req.params.url_number });
-  console.log(shortUrl);
 })
